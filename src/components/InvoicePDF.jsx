@@ -189,11 +189,11 @@ const InvoicePDF = ({ invoice }) => (
       <View style={styles.invoiceInfo}>
         <Text style={styles.text}>
           <Text style={styles.sectionTitle}>Invoice No:</Text>{" "}
-          <Text style={styles.bold}>{invoice.invoiceNo}</Text>
+          <Text style={styles.boldText}>{invoice.invoiceNo}</Text>
         </Text>
         <Text style={styles.text}>
           <Text style={styles.sectionTitle}>Date:</Text>{" "}
-          <Text style={styles.text}>{invoice.date}</Text>
+          <Text style={styles.boldText}>{invoice.date}</Text>
         </Text>
       </View>
       <View style={styles.personsInfo}>
