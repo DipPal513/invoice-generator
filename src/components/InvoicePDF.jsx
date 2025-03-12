@@ -26,7 +26,7 @@ const styles = StyleSheet.create({
     color: "#6B21A8",
   },
   section: { marginBottom: 10 },
-  footerSection: { marginBottom: 10, marginTop: 10 },
+  footerSection: { marginBottom: 10,color:"gray",fontStyle:"italic", marginTop: 10 },
   sectionTitle: {
     fontSize: 16,
     fontWeight: "bold",
@@ -132,19 +132,19 @@ const styles = StyleSheet.create({
   },
   bottomContainer: { display: "flex", flexDirection: "row" },
   payContainer: {
-    width: "35%",
+    width: "40%",
     alignItems: "center",
-    padding: 15,
+    padding: 10,
   },
   container: {
-    width: "70%",
+    width: "60%",
     justifyContent: "center",
     alignItems: "center",
-    padding: 15,
+    padding: 10,
   },
   bottomBox: {
     backgroundColor: "#fff", // Dark purple background
-    padding: 20,
+    padding: 10,
 
     width: "100%", // Set the width as needed
     marginVertical: 10, // Vertical margin between multiple boxes
@@ -239,8 +239,9 @@ const InvoicePDF = ({ invoice }) => (
         <View style={styles.payContainer}>
           <View style={styles.bottomBox}>
             <Text style={styles.sectionTitle}>Please Pay To:</Text>
-            <Text style={styles.bottomText}>J Hossain</Text>
-            <Text style={styles.bottomText}>Account</Text>
+            <Text style={styles.boldText}>J Hossain</Text>
+            <Text style={styles.boldText}>SC : 04-00-03</Text>
+            <Text style={styles.boldText}>ACC : 89667758</Text>
             <View>
             </View>
           </View>
@@ -267,7 +268,7 @@ const InvoicePDF = ({ invoice }) => (
         </View>
       </View>
       {/* Footer */}
-      <Text style={styles.footer}>Thank you for your business!</Text>
+      <Text style={styles.footer}>It has been pleasure during busniess with you. Thank You!</Text>
     </Page>
   </Document>
 );
