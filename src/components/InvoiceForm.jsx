@@ -32,6 +32,7 @@ const InvoiceForm = ({ setInvoiceData }) => {
     date: new Date().toLocaleDateString(),
     items: [
       { name: "Psychological Assessment", price: 200, quantity: 1 },
+      { name: "Psychometric Assessment", price: 200, quantity: 1 },
       { name: "Expert Report", price: 200, quantity: 1 },
       
     ],
