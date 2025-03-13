@@ -8,7 +8,6 @@ const CustomInput = ({
   value,
   onChange,
   placeholder,
-  required
 }) => (
   <div>
     <label className="block font-semibold mb-1">{label}</label>
@@ -30,16 +29,21 @@ const InvoiceForm = ({ setInvoiceData }) => {
     dob: "",
     invoiceNo: "",
     date: new Date().toLocaleDateString(),
-    items: [
-      { name: "Psychological Assessment", price: 200, quantity: 1 },
-      { name: "Psychometric Assessment", price: 200, quantity: 1 },
-      { name: "Expert Report", price: 200, quantity: 1 },
-      
-    ],
-    newItem: { name: "", price: "", quantity: "" },
     discount: 0,
     psychologist: "Jum Nazmul Hossain",
     address: "162 Mile End Road, Basement Unit",
+  });
+
+  const [items, setItems] = useState([
+    { name: "Psychological Assessment", price: 200, quantity: 1 },
+    { name: "Psychometric Assessment", price: 200, quantity: 1 },
+    { name: "Expert Report", price: 200, quantity: 1 },
+  ]);
+
+  const [newItem, setNewItem] = useState({
+    name: "",
+    price: "",
+    quantity: "",
   });
 
   const formRef = useRef(null);
@@ -59,35 +63,25 @@ const InvoiceForm = ({ setInvoiceData }) => {
 
   const handleItemChange = (e) => {
     const { name, value } = e.target;
-    setFormData((prev) => ({
-      ...prev,
-      newItem: { ...prev.newItem, [name]: value },
-    }));
+    setNewItem((prev) => ({ ...prev, [name]: value }));
   };
 
   const addItem = () => {
-    if (
-      formData.newItem.name &&
-      formData.newItem.price > 0 &&
-      formData.newItem.quantity > 0
-    ) {
-      setFormData((prev) => ({
+    if (newItem.name && newItem.price > 0 && newItem.quantity > 0) {
+      setItems((prev) => [
         ...prev,
-        items: [...prev.items, prev.newItem],
-        newItem: { name: "", price: "", quantity: "" },
-      }));
+        { name: newItem.name, price: newItem.price, quantity: newItem.quantity },
+      ]);
+      setNewItem({ name: "", price: "", quantity: "" });
     }
   };
 
   const removeItem = (index) => {
-    setFormData((prev) => {
-      const updatedItems = [...prev.items];
-      updatedItems.splice(index, 1);
-      return { ...prev, items: updatedItems };
-    });
+    setItems((prev) => prev.filter((_, idx) => idx !== index));
+    console.log("item after removing",items)
   };
 
-  const subtotal = formData.items.reduce(
+  const subtotal = items.reduce(
     (sum, item) => sum + item.price * item.quantity,
     0
   );
@@ -97,11 +91,12 @@ const InvoiceForm = ({ setInvoiceData }) => {
   useEffect(() => {
     setInvoiceData({
       ...formData,
+      items,
       subtotal,
       total,
       totalInWords,
     });
-  }, [formData, subtotal, total]);
+  }, [formData, items, subtotal, total,setInvoiceData, totalInWords]);
 
   return (
     <div
@@ -148,10 +143,9 @@ const InvoiceForm = ({ setInvoiceData }) => {
       <CustomInput
         label="Item Name"
         name="name"
-        value={formData.newItem.name}
+        value={newItem.name}
         onChange={handleItemChange}
         placeholder="Enter item name"
-
       />
 
       <div className="flex gap-4 mt-2">
@@ -159,7 +153,7 @@ const InvoiceForm = ({ setInvoiceData }) => {
           label="Quantity"
           type="number"
           name="quantity"
-          value={formData.newItem.quantity}
+          value={newItem.quantity}
           onChange={handleItemChange}
           placeholder="Unit"
         />
@@ -167,7 +161,7 @@ const InvoiceForm = ({ setInvoiceData }) => {
           label="Price"
           type="number"
           name="price"
-          value={formData.newItem.price}
+          value={newItem.price}
           onChange={handleItemChange}
           placeholder="Price"
         />
@@ -179,12 +173,18 @@ const InvoiceForm = ({ setInvoiceData }) => {
       >
         Add Item
       </button>
-
+      <CustomInput
+        label="Discount Amount"
+        name="discount"
+        value={formData.discount}
+        onChange={handleChange}
+        placeholder="Enter discount Amount"
+      />
       <div className="mt-6">
         <h3 className="text-2xl font-semibold text-purple-700 mb-4">Items</h3>
-        {formData.items.length > 0 ? (
+        {items.length > 0 ? (
           <ul>
-            {formData.items.map((item, index) => (
+            {items.map((item, index) => (
               <li
                 key={index}
                 className="flex justify-between items-center bg-gray-100 p-4 mb-2 rounded-lg"
@@ -194,7 +194,7 @@ const InvoiceForm = ({ setInvoiceData }) => {
                 </span>
                 <button
                   onClick={() => removeItem(index)}
-                  className="text-red-500 font-bold"
+                  className="text-red-500 text-2xl cursor-pointer font-bold"
                 >
                   &times;
                 </button>
